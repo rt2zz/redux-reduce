@@ -18,10 +18,10 @@ export type Orchestrator = {
   preselect?: (Object) => Object,
   stateKeys: Set<string>,
   reducers: { [key: string]: Reducer },
-  persistors: Array<Function>,
+  persistorConfigs: { [key: string]: PersistConfig },
 };
 
-export function createOrchestrator(config: OrchestratorConfig) {
+export function createOrchestrator(config: OrchestratorConfig): Orchestrator {
   let persistorConfigs = {}
   let reducers = {}
   let stateKeys = new Set()
@@ -55,33 +55,46 @@ export function createOrchestrator(config: OrchestratorConfig) {
     preselect: config.preselect,
     stateKeys,
     reducers,
-    persistors: makePersists(config.persist, persistorConfigs),
+    persistorConfigs,
   }
 }
 
-export function createReducer(orchestrator: Orchestrator) {
-  const { stateKeys, reducers, persistors } = orchestrator
-  const reducer = (state, action) => {
-    if (action.scope === 'redux-reduce') {
-      let hasChanged = false
-      const nextState = {}
-      for (let key of stateKeys) {
-        const reducer = reducers[key]
-        const previousStateForKey = state[key]
-        const nextStateForKey = reducer(previousStateForKey, action)
-        nextState[key] = nextStateForKey
-        hasChanged = hasChanged || nextStateForKey !== previousStateForKey
-      }
-      return hasChanged ? nextState : state
-    } else {
-      return state
+export function applyReduce(orchestrator: Orchestrator, persist: Function) {
+  const { stateKeys, reducers, persistorConfigs } = orchestrator
+  const persists = makePersists(persist, persistorConfigs)
+
+  const rReducer = (state = {}, action) => {
+    let hasChanged = false
+    const nextState = {}
+    for (let key of stateKeys) {
+      const reducer = reducers[key]
+      const previousStateForKey = state[key]
+      const nextStateForKey = reducer(previousStateForKey, action)
+      nextState[key] = nextStateForKey
+      hasChanged = hasChanged || nextStateForKey !== previousStateForKey
+    }
+    return hasChanged ? nextState : state
+  }
+  let prReducer = compose(...persists)(rReducer)
+
+  return (baseReducer: Function) => {
+    return (state: Object, action: Object) => {
+      let { _reduce, ...restState } = state || {}
+      let newRestState = baseReducer(restState, action)
+      let newPrState = prReducer(_reduce, action)
+      if (newRestState === restState && newPrState === _reduce)
+        return state
+      else
+        return {
+          ...newRestState,
+          _reduce: newPrState,
+        }
     }
   }
-  compose(persistors)(reducer)
 }
 
-function makePersists(persist, persistors) {
-  return persistors.map(persistConfig => {
-    persist(persistConfig, null)
+function makePersists(persist, persistorConfigs) {
+  return Object.keys(persistorConfigs).map(key => {
+    return persist(persistorConfigs[key], null)
   })
 }
