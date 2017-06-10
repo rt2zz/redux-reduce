@@ -3,6 +3,11 @@
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
+  "files": [
+    "es",
+    "lib",
+    "src"
+  ],
   "scripts": {
     "build": "flow-copy-source src es && cross-env BABEL_ENV=es babel src --out-dir es",
     "clean": "rimraf es && rimraf lib",
