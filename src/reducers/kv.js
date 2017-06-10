@@ -35,7 +35,7 @@ export function createKV(orchestrator: Orchestrator) {
           throw new Error(
             'redux-reduce: no state._reduce found, this can indicate redux-reduce was not applied to the root reducer.',
           )
-        return state._reduce[config.key]
+        return state._reduce[config.key].v
       },
     ]
   }

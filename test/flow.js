@@ -1,12 +1,9 @@
 // @flow
 
-import { createOrchestrator } from '../src'
+import { createOrchestrator } from '../src/createOrchestrator'
 import { createKV, type KV } from '../src/reducers/kv'
 
-import { configurePersist } from 'redux-p/src/index'
-const { persist } = configurePersist()
-
-const orchestrator = createOrchestrator({ persistors: [], persist })
+const orchestrator = createOrchestrator({ persists: [] })
 const kv = createKV(orchestrator)
 
 // get maintains flow type of init value
