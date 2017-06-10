@@ -12,7 +12,7 @@
   },
   "lint-staged": {
     "src/**/*.js": [
-      "prettier --no-semi --single-quote --trailing-comma --parser=flow --write",
+      "prettier --no-semi --single-quote --trailing-comma=all --parser=flow --write",
       "git add"
     ]
   },
@@ -46,7 +46,7 @@
     "husky": "^0.13.3",
     "jest": "^19.0.2",
     "lint-staged": "^3.4.0",
-    "prettier": "^0.22.0",
+    "prettier": "^1.4.4",
     "rimraf": "^2.6.1"
   },
   "dependencies": {
