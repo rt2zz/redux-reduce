@@ -14,12 +14,14 @@ export type Orchestrator = {
   createReducer: Function,
 }
 
+type Reducer = (Object, Object) => Object
+
 export function createOrchestrator(config: OrchestratorConfig): Orchestrator {
-  let _sealed = false
+  // let _sealed = false
   let stateKeys = new Set()
   let reducers = {}
   let persistMap = {}
-  let { persists } = config
+  let persists: Array<PersistConfig> = config.persists || []
 
   if (process.env.NODE_ENV !== 'production') validatePersists(persists)
 
@@ -34,10 +36,10 @@ export function createOrchestrator(config: OrchestratorConfig): Orchestrator {
     persistKey?: string,
     reducer: Reducer,
   ) => {
-    if (_sealed)
-      throw new Error(
-        'redux-reduce: cannot register after orchestrator is sealed',
-      ) // @NOTE there could be possible in the future, need to think through consequences
+    // if (_sealed)
+    //   throw new Error(
+    //     'redux-reduce: cannot register after orchestrator is sealed',
+    //   ) // @NOTE there could be possible in the future, need to think through consequences
     if (process.env.NODE_ENV !== 'production' && stateKeys.has(stateKey))
       throw new Error(
         `redux-reduce: key "${stateKey}" has already been registered`,
@@ -45,7 +47,7 @@ export function createOrchestrator(config: OrchestratorConfig): Orchestrator {
     if (
       process.env.NODE_ENV !== 'production' &&
       persistKey &&
-      !persistorConfigs[persistKey]
+      !persistMap[persistKey]
     ) {
       throw new Error(
         'redux-reduce: key specified persistor which does not exist',
@@ -54,7 +56,7 @@ export function createOrchestrator(config: OrchestratorConfig): Orchestrator {
 
     stateKeys.add(stateKey)
     reducers[stateKey] = reducer
-    persistMap[persistKey].whitelist.push(stateKey)
+    persistKey && persistMap[persistKey].whitelist.push(stateKey)
   }
 
   // redux/combineReducers logic
@@ -73,11 +75,11 @@ export function createOrchestrator(config: OrchestratorConfig): Orchestrator {
 
   // persist combined reducer
   let prReducer = persists.reduce((r, persistConfig) => {
-    return persistReducer(persistConfig, null, r)
+    return persistReducer(persistConfig, {}, r)
   }, rReducer)
 
   const createReducer = baseReducer => {
-    _sealed = true
+    // _sealed = true
     return (state: Object, action: Object) => {
       let { _reduce, ...restState } = state || {}
       let newRestState = baseReducer(restState, action)
@@ -100,7 +102,7 @@ export function createOrchestrator(config: OrchestratorConfig): Orchestrator {
 function validatePersists(persists) {
   persists.forEach(p => {
     if (p.whitelist || p.blacklsit)
-      throw new error(
+      throw new Error(
         'redux-reduce: persist config cannot contain whitelist or blacklist',
       )
   })
