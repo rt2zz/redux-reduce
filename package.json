@@ -4,31 +4,55 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "flow-copy-source src es && cross-env BABEL_ENV=es babel src --out-dir es",
+    "clean": "rimraf es && rimraf lib",
     "precommit": "lint-staged",
-    "test": "jest"
+    "prepublishOnly": "npm run clean && npm run build",
+    "test": "ava"
   },
   "lint-staged": {
     "src/**/*.js": [
-      "prettier --single-quote --trailing-comma --parser=flow --write --printWidth=120",
-      "eslint --fix",
+      "prettier --no-semi --single-quote --trailing-comma --parser=flow --write",
       "git add"
     ]
   },
-  "jest": {
-    "rootDir": "src"
+  "ava": {
+    "files": [
+      "tests/**/*.spec.js"
+    ],
+    "require": [
+      "babel-polyfill",
+      "babel-register"
+    ],
+    "babel": "inherit"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "ava": "^0.19.1",
     "babel-eslint": "^7.2.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-env": "^1.5.2",
+    "babel-preset-flow": "^6.23.0",
+    "babel-register": "^6.24.1",
+    "cross-env": "^5.0.1",
     "eslint": "^3.19.0",
     "eslint-plugin-flowtype": "^2.30.4",
     "eslint-plugin-import": "^2.2.0",
     "flow-bin": "0.43",
+    "flow-copy-source": "^1.1.0",
     "husky": "^0.13.3",
     "jest": "^19.0.2",
     "lint-staged": "^3.4.0",
     "prettier": "^0.22.0",
-    "redux": "^3.6.0"
+    "rimraf": "^2.6.1"
+  },
+  "dependencies": {
+    "redux-p2": "0.0.3"
+  },
+  "peerDependencies": {
+    "redux": ">3.0.0"
   }
 }
