@@ -1884,9 +1884,9 @@ flat-cache@^1.2.1:
     graceful-fs "^4.1.2"
     write "^0.2.1"
 
-flow-bin@0.43:
-  version "0.43.1"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.43.1.tgz#0733958b448fb8ad4b1576add7e87c31794c81bc"
+flow-bin@^0.47.0:
+  version "0.47.0"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.47.0.tgz#a2a08ab3e0d1f1cb57d17e27b30b118b62fda367"
 
 flow-copy-source@^1.1.0:
   version "1.1.0"
@@ -3733,11 +3733,10 @@ redent@^1.0.0:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
 
-redux-p2@0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/redux-p2/-/redux-p2-0.0.3.tgz#cf92b6512ed48fe315df8869012cabac2af00912"
+redux-p2@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/redux-p2/-/redux-p2-0.0.4.tgz#b06ca985038a60c7466b211a087f7ede1ab7c27e"
   dependencies:
-    flow-copy-source "^1.1.0"
     json-stringify-safe "^5.0.1"
 
 redux@^3.6.0:

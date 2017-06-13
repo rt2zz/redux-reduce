@@ -46,7 +46,7 @@
     "eslint": "^3.19.0",
     "eslint-plugin-flowtype": "^2.30.4",
     "eslint-plugin-import": "^2.2.0",
-    "flow-bin": "0.43",
+    "flow-bin": "^0.47.0",
     "flow-copy-source": "^1.1.0",
     "husky": "^0.13.3",
     "jest": "^19.0.2",
@@ -56,7 +56,7 @@
     "rimraf": "^2.6.1"
   },
   "dependencies": {
-    "redux-p2": "0.0.3"
+    "redux-p2": "^0.0.4"
   },
   "peerDependencies": {
     "redux": ">3.0.0"
