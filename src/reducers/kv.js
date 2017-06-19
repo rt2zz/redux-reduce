@@ -41,7 +41,7 @@ export function createKV(orchestrator: Orchestrator) {
   }
 }
 
-const createReducer = config => (state = {}, action) => {
+const createReducer = config => (state = { v: config.init }, action) => {
   if (action.type === 'SET_KV' && action.key === config.key) {
     return createValueNode(action, config)
   }

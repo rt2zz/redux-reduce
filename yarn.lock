@@ -3733,9 +3733,9 @@ redent@^1.0.0:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
 
-redux-p2@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/redux-p2/-/redux-p2-0.0.4.tgz#b06ca985038a60c7466b211a087f7ede1ab7c27e"
+redux-p2@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/redux-p2/-/redux-p2-0.0.6.tgz#9a9feded8617a3ebd7b7660cf98101e386865b81"
   dependencies:
     json-stringify-safe "^5.0.1"
 
