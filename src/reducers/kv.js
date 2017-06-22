@@ -8,6 +8,7 @@ type KVConfig<I> = {
   init: I,
   expiresIn?: number,
   persist?: string,
+  hydrate?: Function,
 }
 
 type KVAction<I> = {
@@ -49,6 +50,7 @@ const createReducer = config => (state = { v: config.init }, action) => {
     if (!action.payload) return state
     let now = Date.now()
     let incomingState = action.payload[config.key]
+    if (config.hydrate) incomingState = config.hydrate(incomingState)
     return incomingState && (!incomingState.e || incomingState.e > now)
       ? incomingState
       : state
