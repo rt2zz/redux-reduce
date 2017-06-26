@@ -50,7 +50,7 @@ const createReducer = config => (state = { v: config.init }, action) => {
     if (!action.payload) return state
     let now = Date.now()
     let incomingState = action.payload[config.key]
-    if (config.hydrate) incomingState = config.hydrate(incomingState)
+    if (config.hydrate) incomingState.v = config.hydrate(incomingState.v)
     return incomingState && (!incomingState.e || incomingState.e > now)
       ? incomingState
       : state
