@@ -1,6 +1,6 @@
 // @flow
 
-import { REHYDRATE } from 'redux-p2/src/constants'
+import { REHYDRATE } from 'redux-persist/src/constants'
 import type { Orchestrator } from '../createOrchestrator'
 
 type KVConfig<I> = {

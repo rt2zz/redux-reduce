@@ -2,8 +2,8 @@
 
 import { compose } from 'redux'
 
-import { persistReducer } from 'redux-p2/es/persistReducer'
-import type { PersistConfig } from 'redux-p2/src/types'
+import persistReducer from 'redux-persist/es/persistReducer'
+import type { PersistConfig } from 'redux-persist/src/types'
 
 type OrchestratorConfig = {
   defaultPersistKey?: string,
