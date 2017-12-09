@@ -80,7 +80,7 @@ export function createOrchestrator(config: OrchestratorConfig): Orchestrator {
 
   // persist combined reducer
   let prReducer = persists.reduce((r, persistConfig) => {
-    return persistReducer(persistConfig, {}, r)
+    return persistReducer(persistConfig, r)
   }, rReducer)
 
   const createReducer = baseReducer => {
